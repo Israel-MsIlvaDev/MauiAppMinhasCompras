@@ -1,7 +1,7 @@
 ﻿using MauiAppMinhasCompras.Models;
 using System;
 
-namespace MauiAppMinhasCompras
+namespace MauiAppMinhasCompras.Views
 {
     public partial class MainPage : ContentPage
     {
