@@ -27,6 +27,12 @@
                     BackgroundColor="DarkBlue"
                     TextColor="White"/>
 
+            <Button Text="Ver Lista de Produtos" 
+                    Clicked="VerLista_Clicked" 
+                    BackgroundColor="Gray"
+                    TextColor="White"
+                    Margin="0,10,0,0"/>
+
         </VerticalStackLayout>
     </ScrollView>
 

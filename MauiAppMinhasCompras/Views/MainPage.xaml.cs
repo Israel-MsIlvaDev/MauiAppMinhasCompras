@@ -1,5 +1,6 @@
 ﻿using MauiAppMinhasCompras.Models;
 using System;
+using Microsoft.Maui.Controls;
 
 namespace MauiAppMinhasCompras.Views
 {
@@ -37,6 +38,12 @@ namespace MauiAppMinhasCompras.Views
             {
                 await DisplayAlert("Erro", ex.Message, "OK");
             }
+        }
+
+        // Nova integração: Método para abrir a tela de listagem
+        private async void VerLista_Clicked(object sender, EventArgs e)
+        {
+            await Navigation.PushAsync(new ListagemPage());
         }
     }
 }

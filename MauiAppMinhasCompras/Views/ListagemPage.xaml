@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiAppMinhasCompras.Views.ListagemPage"
+             Title="Lista de Produtos">
+
+    <StackLayout Padding="20">
+
+        <SearchBar x:Name="searchBarProdutos"
+                   Placeholder="Buscar produtos..."
+                   TextChanged="OnSearchTextChanged" />
+
+        <ListView x:Name="listaProdutos" HasUnevenRows="True" Margin="0,20,0,0">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <StackLayout Padding="10">
+                            <Label Text="{Binding Descricao}" FontAttributes="Bold" FontSize="18" />
+                            <Label Text="{Binding Preco, StringFormat='R$ {0:F2}'}" TextColor="Green" />
+                        </StackLayout>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+    </StackLayout>
+
+</ContentPage>
