@@ -43,7 +43,7 @@ namespace MauiAppMinhasCompras.Views
         // Nova integração: Método para abrir a tela de listagem
         private async void VerLista_Clicked(object sender, EventArgs e)
         {
-            await Navigation.PushAsync(new ListagemPage());
+            await Navigation.PushAsync(new ListaProduto());
         }
     }
 }

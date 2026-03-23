@@ -64,13 +64,19 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Compile Update="Views\ListagemPage.xaml.cs">
-	    <DependentUpon>ListagemPage.xaml</DependentUpon>
+	  <Compile Update="Views\ListaProduto.xaml.cs">
+	    <DependentUpon>ListaProduto.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Views\EditarProduto.xaml.cs">
+	    <DependentUpon>EditarProduto.xaml</DependentUpon>
 	  </Compile>
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiXaml Update="Views\ListagemPage.xaml">
+	  <MauiXaml Update="Views\ListaProduto.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\EditarProduto.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>
