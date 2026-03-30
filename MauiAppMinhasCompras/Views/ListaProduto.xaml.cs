@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using Microsoft.Maui.Controls;
 using MauiAppMinhasCompras.Models;
+using System.Globalization;
 
 namespace MauiAppMinhasCompras.Views
 {
@@ -18,55 +19,76 @@ namespace MauiAppMinhasCompras.Views
             listaProdutos.ItemsSource = produtosFiltrados;
         }
 
-        // Carrega os dados do SQLite sempre que o ecrã for aberto
         protected override async void OnAppearing()
         {
             base.OnAppearing();
 
             produtosOriginais = await App.Db.GetAll();
-
-            produtosFiltrados.Clear();
-            foreach (var p in produtosOriginais)
-            {
-                produtosFiltrados.Add(p);
-            }
+            AtualizarListaETotal(); // Chama o método centralizado para preencher a lista
         }
 
-        // Filtra os dados dinamicamente conforme o texto é alterado
+        // Método central que aplica o filtro de texto, o filtro de categoria e calcula o total
+        private void AtualizarListaETotal()
+        {
+            string termoBusca = searchBarProdutos.Text?.ToLower() ?? "";
+            string categoriaSelecionada = (string)pck_filtroCategoria.SelectedItem ?? "Todas as Categorias";
+
+            produtosFiltrados.Clear();
+
+            // Inicia com todos os produtos
+            var query = produtosOriginais.AsEnumerable();
+
+            // 1. Aplica o filtro de texto (SearchBar)
+            if (!string.IsNullOrEmpty(termoBusca))
+            {
+                query = query.Where(p => p.Descricao.ToLower().Contains(termoBusca));
+            }
+
+            // 2. Aplica o filtro de categoria (Picker)
+            if (categoriaSelecionada != "Todas as Categorias" && !string.IsNullOrEmpty(categoriaSelecionada))
+            {
+                query = query.Where(p => p.Categoria == categoriaSelecionada);
+            }
+
+            var listaFinal = query.ToList();
+            double valorTotal = 0;
+
+            // Preenche a tela e calcula o total gasto (Quantidade * Preço)
+            foreach (var p in listaFinal)
+            {
+                produtosFiltrados.Add(p);
+                valorTotal += (p.Preco * p.Quantidade);
+            }
+
+            // Agenda 6: Atualiza o texto do Label de total com a formatação de moeda regionalizada
+            lbl_totalCategoria.Text = string.Format(new CultureInfo("pt-BR"), "Total Gasto: {0:C}", valorTotal);
+        }
+
+        // Evento disparado quando o usuário digita na busca
         private void OnSearchTextChanged(object sender, TextChangedEventArgs e)
         {
-            string termoBusca = e.NewTextValue?.ToLower() ?? "";
-
-            produtosFiltrados.Clear();
-
-            var produtosEncontrados = produtosOriginais.Where(p => p.Descricao.ToLower().Contains(termoBusca)).ToList();
-
-            foreach (var p in produtosEncontrados)
-            {
-                produtosFiltrados.Add(p);
-            }
+            AtualizarListaETotal();
         }
 
-        // Agenda 5: Método acionado quando o usuário arrasta o item e clica em "Remover"
+        // Evento disparado quando o usuário muda a categoria no Picker
+        private void pck_filtroCategoria_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            AtualizarListaETotal();
+        }
+
         private async void MenuItem_Clicked(object sender, EventArgs e)
         {
             try
             {
-                // Descobre qual item foi clicado
                 MenuItem mi = (MenuItem)sender;
                 Produto p = (Produto)mi.CommandParameter;
 
-                // Alerta de confirmação usando DisplayAlert
                 bool confirmacao = await DisplayAlert("Tem Certeza?", $"Deseja excluir o produto {p.Descricao}?", "Sim", "Não");
 
-                // Se o usuário clicar em "Sim"
                 if (confirmacao)
                 {
-                    // Deleta do banco de dados
                     await App.Db.Delete(p.Id);
                     await DisplayAlert("Sucesso", "Produto excluído com sucesso!", "OK");
-
-                    // Recarrega a lista para o produto sumir da tela
                     OnAppearing();
                 }
             }
@@ -76,22 +98,15 @@ namespace MauiAppMinhasCompras.Views
             }
         }
 
-        // Agenda 5: Método acionado quando o usuário dá um toque (clique) em cima do produto na lista
         private async void listaProdutos_ItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
             try
             {
-                // Se não tiver nada selecionado, não faz nada
                 if (e.SelectedItem == null)
                     return;
 
-                // Pega o produto que foi clicado
                 Produto p = (Produto)e.SelectedItem;
-
-                // Abre a tela de edição (que vamos criar no Passo 3) e envia o produto para ela
                 await Navigation.PushAsync(new EditarProduto { BindingContext = p });
-
-                // Tira a marcação visual de "selecionado" do item
                 ((ListView)sender).SelectedItem = null;
             }
             catch (Exception ex)

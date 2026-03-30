@@ -10,7 +10,31 @@
                    Placeholder="Buscar produtos..."
                    TextChanged="OnSearchTextChanged" />
 
-        <ListView x:Name="listaProdutos" HasUnevenRows="True" Margin="0,20,0,0" ItemSelected="listaProdutos_ItemSelected">
+        <Picker x:Name="pck_filtroCategoria" 
+                Title="Filtrar por Categoria" 
+                SelectedIndexChanged="pck_filtroCategoria_SelectedIndexChanged"
+                Margin="0,10,0,0">
+            <Picker.ItemsSource>
+                <x:Array Type="{x:Type x:String}">
+                    <x:String>Todas as Categorias</x:String>
+                    <x:String>Alimentos</x:String>
+                    <x:String>Higiene</x:String>
+                    <x:String>Limpeza</x:String>
+                    <x:String>Eletrônicos</x:String>
+                    <x:String>Outros</x:String>
+                </x:Array>
+            </Picker.ItemsSource>
+        </Picker>
+
+        <Label x:Name="lbl_totalCategoria" 
+               Text="Total: R$ 0,00" 
+               FontSize="18" 
+               FontAttributes="Bold" 
+               TextColor="DarkBlue" 
+               HorizontalOptions="End" 
+               Margin="0,15,0,10" />
+
+        <ListView x:Name="listaProdutos" HasUnevenRows="True" Margin="0,10,0,0" ItemSelected="listaProdutos_ItemSelected">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
@@ -24,6 +48,8 @@
                         <StackLayout Padding="10">
                             <Label Text="{Binding Descricao}" FontAttributes="Bold" FontSize="18" />
                             <Label Text="{Binding Preco, StringFormat='R$ {0:F2}'}" TextColor="Green" />
+
+                            <Label Text="{Binding Categoria}" FontSize="12" TextColor="Gray" />
                         </StackLayout>
                     </ViewCell>
                 </DataTemplate>
@@ -31,5 +57,4 @@
         </ListView>
 
     </StackLayout>
-
 </ContentPage>

@@ -1,39 +1,42 @@
-﻿<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MauiAppMinhasCompras.Views.MainPage"
-             Title="Novo Produto">
+             Title="Cadastrar Novo Produto">
 
     <ScrollView>
-        <VerticalStackLayout Padding="30" Spacing="20">
+        <VerticalStackLayout Padding="30" Spacing="15">
 
-            <Label Text="Cadastrar Novo Produto" 
-                   FontSize="24" 
-                   FontAttributes="Bold"
-                   HorizontalOptions="Center" />
+            <Label Text="Cadastrar Novo Produto" FontSize="24" FontAttributes="Bold" HorizontalOptions="Center" />
 
-            <Entry x:Name="txtDescricao" 
-                   Placeholder="Descrição do produto" />
+            <Entry x:Name="txtDescricao" Placeholder="Descrição do produto" />
 
-            <Entry x:Name="txtQuantidade" 
-                   Placeholder="Quantidade" 
-                   Keyboard="Numeric" />
+            <Entry x:Name="txtQuantidade" Placeholder="Quantidade" Keyboard="Numeric" />
 
-            <Entry x:Name="txtPreco" 
-                   Placeholder="Preço" 
-                   Keyboard="Numeric" />
+            <Entry x:Name="txtPreco" Placeholder="Preço" Keyboard="Numeric" />
+
+            <Picker x:Name="pck_categoria" Title="Selecione a Categoria">
+                <Picker.ItemsSource>
+                    <x:Array Type="{x:Type x:String}">
+                        <x:String>Alimentos</x:String>
+                        <x:String>Higiene</x:String>
+                        <x:String>Limpeza</x:String>
+                        <x:String>Eletrônicos</x:String>
+                        <x:String>Outros</x:String>
+                    </x:Array>
+                </Picker.ItemsSource>
+            </Picker>
 
             <Button Text="Salvar Produto" 
                     Clicked="Button_Clicked" 
-                    BackgroundColor="DarkBlue"
-                    TextColor="White"/>
+                    BackgroundColor="DarkBlue" 
+                    TextColor="White" />
 
             <Button Text="Ver Lista de Produtos" 
                     Clicked="VerLista_Clicked" 
-                    BackgroundColor="Gray"
-                    TextColor="White"
-                    Margin="0,10,0,0"/>
+                    BackgroundColor="Gray" 
+                    TextColor="White" />
 
         </VerticalStackLayout>
     </ScrollView>
-
 </ContentPage>
